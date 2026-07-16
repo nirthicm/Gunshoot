@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Blockshot — 2D Minecraft-style Shooter</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="ui">
+      <div id="title">Blockshot</div>
+      <div id="info">WASD to move · Mouse to aim · Click or Space to shoot</div>
+      <div id="hud">Level: <span id="level">1</span>  Score: <span id="score">0</span></div>
+      <div id="controls">
+        <label for="levelSelect">Level:</label>
+        <select id="levelSelect"></select>
+        <span id="highscoreWrap">High Score: <strong id="highscore">0</strong></span>
+        <button id="resetHigh">Reset High</button>
+      </div>
+    </div>
+    <canvas id="game"></canvas>
+    <div id="mobile-controls" aria-hidden="true">
+      <div id="joystick" class="touch-area"></div>
+      <div id="shootBtn" class="touch-area">Shoot</div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+:root{
+  --sky:#9bd3ff;
+  --grass:#37c02f;
+  --dirt:#8b5a2b;
+  --panel: rgba(0,0,0,0.45);
+}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial;background:var(--sky);}
+#ui{position:fixed;left:12px;top:8px;color:#fff;z-index:10}
+#title{font-weight:700;font-size:20px;letter-spacing:1px}
+#info{font-size:12px;opacity:0.9}
+#hud{margin-top:6px;font-size:14px;background:var(--panel);padding:6px;border-radius:6px}
+#controls{margin-top:8px;display:flex;gap:8px;align-items:center}
+#controls select{padding:4px;border-radius:4px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff}
+#controls button{padding:4px 8px;border-radius:6px;border:none;background:#304f33;color:#fff;cursor:pointer}
+#highscoreWrap{margin-left:6px;font-weight:600}
+canvas{display:block;margin:40px auto;border:6px solid #2f2f2f;background:linear-gradient(#87ceeb,#7ec0ff);box-shadow:0 8px 30px rgba(0,0,0,0.35)}
+
+/* Make the canvas a comfortable size */
+@media(min-width:1000px){
+  canvas{width:960px;height:640px}
+}
+@media(max-width:999px){
+  canvas{width:860px;height:540px}
+}
+
+.small{font-size:12px}
+
+/* Mobile touch controls */
+#mobile-controls{position:fixed;left:0;right:0;bottom:12px;display:flex;justify-content:space-between;padding:0 24px;pointer-events:none;z-index:12}
+.touch-area{pointer-events:auto}
+#joystick{width:120px;height:120px;border-radius:50%;background:linear-gradient(#2f2f2f,#222);opacity:0.9;display:flex;align-items:center;justify-content:center}
+#joystick:after{content:'';width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.06)}
+#shootBtn{min-width:84px;height:84px;border-radius:16px;background:linear-gradient(#d54,#c23);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
+
+@media(min-width:900px){
+  #mobile-controls{display:none}
+}
