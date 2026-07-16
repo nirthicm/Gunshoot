@@ -49,15 +49,36 @@ class Player{
     if(this.reload>0) this.reload -= dt;
   }
   draw(){
-    ctx.fillStyle = '#2b2b2b'; ctx.fillRect(this.x-8,this.y+8,6,12); ctx.fillRect(this.x+2,this.y+8,6,12);
-    ctx.fillStyle = '#1769aa'; ctx.fillRect(this.x-12,this.y-6,24,20);
-    ctx.fillStyle = '#1c6fb7'; ctx.fillRect(this.x-16,this.y-6,4,16); ctx.fillRect(this.x+12,this.y-6,4,16);
-    ctx.fillStyle = '#f1c27d'; ctx.fillRect(this.x-11,this.y-28,22,22);
+    // body and legs
+    ctx.fillStyle = '#1b1b1b'; ctx.fillRect(this.x-8,this.y+8,6,12); ctx.fillRect(this.x+2,this.y+8,6,12);
+    ctx.fillStyle = '#0f3d2c'; ctx.fillRect(this.x-12,this.y-6,24,20);
+    ctx.fillStyle = '#13392d'; ctx.fillRect(this.x-16,this.y-6,4,16); ctx.fillRect(this.x+12,this.y-6,4,16);
+    ctx.fillStyle = '#e8c38a'; ctx.fillRect(this.x-11,this.y-28,22,22);
     ctx.fillStyle = '#000'; ctx.fillRect(this.x-5,this.y-22,3,3); ctx.fillRect(this.x+2,this.y-22,3,3);
+
+    // gun
+    const ang = Math.atan2(mouse.y - this.y, mouse.x - this.x);
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(ang);
+    ctx.fillStyle = '#2b2b2b';
+    ctx.fillRect(12, -4, 24, 8);
+    ctx.fillRect(6, 2, 8, 10);
+    ctx.fillStyle = '#111';
+    ctx.fillRect(26, -3, 8, 6);
+    ctx.restore();
   }
 }
 
-class Enemy{ constructor(x,y){ this.x=x; this.y=y; this.size=26; this.speed=70 + Math.random()*40; } update(dt, player){ const ax = player.x - this.x; const ay = player.y - this.y; const d = Math.hypot(ax,ay)||1; this.x += (ax/d)*this.speed*dt; this.y += (ay/d)*this.speed*dt; } draw(){ ctx.fillStyle = '#8e3b3b'; ctx.fillRect(this.x-12,this.y-18,24,30); ctx.fillStyle = '#caa27a'; ctx.fillRect(this.x-10,this.y-28,20,16); } }
+class Enemy{ constructor(x,y){ this.x=x; this.y=y; this.size=26; this.speed=70 + Math.random()*40; } update(dt, player){ const ax = player.x - this.x; const ay = player.y - this.y; const d = Math.hypot(ax,ay)||1; this.x += (ax/d)*this.speed*dt; this.y += (ay/d)*this.speed*dt; } draw(){
+    ctx.fillStyle = '#2a2a2a'; ctx.fillRect(this.x-12,this.y-18,24,30);
+    ctx.fillStyle = '#0d1a0f'; ctx.fillRect(this.x-12,this.y-18,24,10);
+    ctx.fillStyle = '#742222'; ctx.fillRect(this.x-10,this.y-28,20,16);
+    ctx.fillStyle = '#000'; ctx.fillRect(this.x-8,this.y-24,6,6); ctx.fillRect(this.x+2,this.y-24,6,6);
+    ctx.fillStyle = '#e43535'; ctx.fillRect(this.x-5,this.y-16,10,4);
+    ctx.fillStyle = '#382717'; ctx.fillRect(this.x-16,this.y-6,4,16); ctx.fillRect(this.x+12,this.y-6,4,16);
+    ctx.fillStyle = '#a02f2f'; ctx.fillRect(this.x-10,this.y-8,20,4);
+  } }
 
 class Bullet{ constructor(x,y,vx,vy){ this.x=x; this.y=y; this.vx=vx; this.vy=vy; this.r=4; this.life=2; } update(dt){ this.x += this.vx*dt; this.y += this.vy*dt; this.life -= dt; } draw(){ ctx.fillStyle='#fff2a8'; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill(); } }
 
@@ -88,16 +109,28 @@ loadHigh();
 
 spawnEnemies(levels[0]);
 
-function drawGrass(){
+function drawForestFloor(){
   const cols = Math.ceil(canvas.clientWidth / TILE);
   const rows = Math.ceil(canvas.clientHeight / TILE);
   for(let r=0;r<rows;r++){
     for(let c=0;c<cols;c++){
       const x=c*TILE, y=r*TILE;
-      if(r > rows - 4){ ctx.fillStyle = '#8b5a2b'; ctx.fillRect(x,y,TILE,TILE); if(r === rows-4){ ctx.fillStyle = '#37c02f'; ctx.fillRect(x,y, TILE, TILE/3); } }
-      else { ctx.fillStyle = (Math.random()<0.02)? '#2fb042' : '#37c02f'; ctx.fillRect(x,y,TILE,TILE); }
-      ctx.strokeStyle = 'rgba(0,0,0,0.03)'; ctx.strokeRect(x+0.5,y+0.5,TILE-1,TILE-1);
+      if(r > rows - 4){ ctx.fillStyle = '#3d331f'; ctx.fillRect(x,y,TILE,TILE); if(r === rows-4){ ctx.fillStyle = '#4b6c2f'; ctx.fillRect(x,y, TILE, TILE/3); } }
+      else { ctx.fillStyle = (Math.random()<0.15)? '#356131' : '#244826'; ctx.fillRect(x,y,TILE,TILE); }
+      if(Math.random() < 0.05){ ctx.fillStyle = '#1f4b1f'; ctx.fillRect(x+6,y+6,20,20); }
+      ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.strokeRect(x+0.5,y+0.5,TILE-1,TILE-1);
     }
+  }
+
+  // simple forest silhouettes
+  const treePositions = [80, 240, 420, 600, 760];
+  for(let tx of treePositions){
+    const ty = 120 + (tx % 180);
+    ctx.fillStyle = '#5d3b1d'; ctx.fillRect(tx-4, ty, 8, 60);
+    ctx.fillStyle = '#1f5b2f';
+    ctx.beginPath(); ctx.moveTo(tx-26, ty+12); ctx.lineTo(tx+26, ty+12); ctx.lineTo(tx, ty-22); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(tx-22, ty+28); ctx.lineTo(tx+22, ty+28); ctx.lineTo(tx, ty-10); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(tx-18, ty+42); ctx.lineTo(tx+18, ty+42); ctx.lineTo(tx, ty+8); ctx.fill();
   }
 }
 
@@ -140,7 +173,7 @@ function loop(t){
 
   // draw
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  drawGrass();
+  drawForestFloor();
   for(let p of particles) p.draw();
   for(let e of enemies) e.draw();
   for(let b of bullets) b.draw();
